@@ -47,4 +47,8 @@ RSpec.configure do |config|
   config.before(:each, type: :controller) do
     include_default_accept_headers
   end
+
+  # Infer spec type from a file location (explicit mention required by RSpec 3.x)
+  config.infer_spec_type_from_file_location!
+
 end

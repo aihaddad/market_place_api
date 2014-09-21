@@ -1,7 +1,6 @@
 require 'api_constraints'
 
 MarketPlaceApi::Application.routes.draw do
-  mount SabisuRails::Engine => "/sabisu_rails"
   devise_for :users
   # Api definition
   namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api' }, path: '/'  do
