@@ -14,7 +14,7 @@ SabisuRails.setup do |config|
   # Headers to include on each request
   #
   # You can configure the api headers fairly easy by just adding the correct headers
-   config.api_headers = { "Accept" => "application/vnd.marketplace.v1" }
+  config.api_headers = { "Accept" => "application/vnd.marketplace.v1" }
   #
   # config.api_headers = {}
 
