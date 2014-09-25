@@ -18,7 +18,7 @@ describe Api::V1::UsersController do
 
   describe "POST #create" do
 
-    context "when it is successfully created" do
+    context "when record is successfully created" do
       before(:each) do
         @user_attributes = FactoryGirl.attributes_for :user
         post :create, { user: @user_attributes }, format: :json
@@ -45,7 +45,7 @@ describe Api::V1::UsersController do
         expect(user_response).to have_key(:errors)
       end
 
-      it "renders the json clarifying that email cannot be blank" do
+      it "renders the json clarifying reasons for the error" do
         user_response = JSON.parse(response.body, symbolize_names: true)
         expect(user_response[:errors][:email]).to include "can't be blank"
       end
@@ -54,4 +54,49 @@ describe Api::V1::UsersController do
     end
   end #create
 
+  describe "PUT/POST #update" do
+    
+
+    context 'when record is updated successfully' do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        patch :update, { id: @user.id, user: { email: "newemail@example.com" } }, format: :json
+      end
+
+      it "renders the json for the user record just updated" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:email]).to eql "newemail@example.com"
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context 'with bad email' do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        patch :update, { id: @user.id, user: { email: "badmail.com" } }, format: :json
+      end
+
+      it "renders and errors json" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response).to have_key(:errors)
+      end
+
+      it "renders the json clarifying reasons for the error" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:errors][:email]).to include "is invalid"
+      end
+
+      it { should respond_with 422 }
+    end
+  end #update
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      delete :destroy, { id: @user.id }, format: :json
+    end
+
+    it { should respond_with 204 }
+  end #destroy
 end
