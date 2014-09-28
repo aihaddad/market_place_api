@@ -13,6 +13,8 @@ describe User do
   it { should allow_value('example@domain.com').for(:email) }
   it { should validate_uniqueness_of(:auth_token) }
 
+  it { should have_many :products }
+
   describe "#generate_authentication_token!" do
     
     it "generates a unique token" do
@@ -27,4 +29,19 @@ describe User do
       expect(@user.auth_token).not_to eql existing_user.auth_token
     end
   end # auth token
+
+  describe "#products association" do
+    before do
+      @user.save
+      3.times { FactoryGirl.create :product, user: @user }
+    end
+
+    it "destroys associated products on user destroy" do
+      products = @user.products
+      @user.destroy
+      products.each do |product|
+        expect(Product.find(product)).to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
 end

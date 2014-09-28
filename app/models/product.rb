@@ -1,4 +1,6 @@
 class Product < ActiveRecord::Base
+  # Relations
+  belongs_to :user
 
   # Validations
   validates :title, :user_id, presence: true
