@@ -9,10 +9,18 @@ describe Api::V1::ProductsController do
     end
 
     it "returns a json with the right product" do
-      expect(json_response[:title]).to eql @product.title
+      expect(json_response[:product][:title]).to eql @product.title
+    end
+    
+    it "has user details i" do
+      
     end
 
     it { should respond_with 200 }
+    
+    it "has user details embedded inside" do
+      expect(json_response[:product][:user][:email]).to eql @product.user.email
+    end
   end #show
 
   describe "GET #index" do
@@ -26,6 +34,12 @@ describe Api::V1::ProductsController do
     end
 
     it { should respond_with 200 }
+    
+    it "returns the user object into each product" do
+      json_response[:products].each do |product_response|
+        expect(product_response[:user]).to be_present
+      end
+    end
   end #index
 
   describe "POST #create" do
@@ -39,7 +53,7 @@ describe Api::V1::ProductsController do
       end
 
       it "renders json for the product just created" do
-        expect(json_response[:title]).to eql @product_attributes[:title]
+        expect(json_response[:product][:title]).to eql @product_attributes[:title]
       end
 
       it { should respond_with 201 }
@@ -79,7 +93,7 @@ describe Api::V1::ProductsController do
       end
 
       it "renders json for the product just updated" do
-        expect(json_response[:title]).to eql "An expensive TV"
+        expect(json_response[:product][:title]).to eql "An expensive TV"
       end
 
       it { should respond_with 200 }

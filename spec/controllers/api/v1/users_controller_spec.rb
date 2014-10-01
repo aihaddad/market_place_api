@@ -11,7 +11,7 @@ describe Api::V1::UsersController do
     it { should respond_with 200 }
 
     it "returns the right user information" do
-      user_response = json_response
+      user_response = json_response[:user]
       expect(user_response[:email]).to eql @user.email
     end
   end #show
@@ -25,7 +25,7 @@ describe Api::V1::UsersController do
       end
 
       it "renders the json for the user record just created" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql @user_attributes[:email]
       end
 
@@ -67,7 +67,7 @@ describe Api::V1::UsersController do
       end
 
       it "renders the json for the user record just updated" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql "newemail@example.com"
       end
 
