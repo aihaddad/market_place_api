@@ -9,7 +9,8 @@ describe Api::V1::ProductsController do
     end
 
     it "returns a json with the right product" do
-      expect(json_response[:product][:title]).to eql @product.title
+      product_response = json_response[:product]
+      expect(product_response[:title]).to eql @product.title
     end
     
     it "has user details i" do
@@ -19,7 +20,8 @@ describe Api::V1::ProductsController do
     it { should respond_with 200 }
     
     it "has user details embedded inside" do
-      expect(json_response[:product][:user][:email]).to eql @product.user.email
+      product_response = json_response[:product]
+      expect(product_response[:user][:email]).to eql @product.user.email
     end
   end #show
 
